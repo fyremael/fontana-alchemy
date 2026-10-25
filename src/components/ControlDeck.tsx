@@ -99,49 +99,49 @@ export const ControlDeck: React.FC<ControlDeckProps> = ({
       </div>
 
       {/* Phase Transition Triggers */}
-      <div className="flex flex-col gap-1.5">
-        <div className="text-[10px] text-slate-500 uppercase tracking-wider font-semibold">
+      <div className="flex flex-col gap-2">
+        <div className="text-xs text-slate-400 uppercase tracking-wider font-semibold">
           Phase Transition Triggers & Injections
         </div>
-        <div className="grid grid-cols-2 sm:grid-cols-4 gap-1.5 text-xs">
+        <div className="grid grid-cols-2 sm:grid-cols-4 gap-2 text-xs">
           <button
             onClick={() => reactor.initLevel0()}
-            className="p-2 rounded bg-slate-800/80 hover:bg-slate-700/80 border border-slate-700/60 text-slate-300 text-left flex flex-col gap-0.5"
+            className="p-2.5 rounded-lg bg-slate-800/80 hover:bg-slate-700/80 border border-slate-700/60 text-slate-300 text-left flex flex-col gap-0.5"
           >
-            <span className="flex items-center gap-1 text-[11px] font-bold text-amber-400">
-              <RefreshCw className="w-3 h-3" /> Phase 0 Gas
+            <span className="flex items-center gap-1.5 text-xs font-bold text-amber-400">
+              <RefreshCw className="w-3.5 h-3.5" /> Phase 0 Gas
             </span>
-            <span className="text-[9px] text-slate-400">Entropic Noise</span>
+            <span className="text-xs text-slate-400 font-medium">Entropic Noise</span>
           </button>
 
           <button
             onClick={handleInjectTriplet}
-            className="p-2 rounded bg-cyan-950/40 hover:bg-cyan-900/50 border border-cyan-500/40 text-cyan-200 text-left flex flex-col gap-0.5 shadow-[0_0_8px_rgba(0,240,255,0.15)]"
+            className="p-2.5 rounded-lg bg-cyan-950/40 hover:bg-cyan-900/50 border border-cyan-500/40 text-cyan-200 text-left flex flex-col gap-0.5 shadow-[0_0_8px_rgba(0,240,255,0.15)]"
           >
-            <span className="flex items-center gap-1 text-[11px] font-bold text-cyan-300">
-              <Sparkles className="w-3 h-3 text-cyan-400" /> Phase 1 Triplet
+            <span className="flex items-center gap-1.5 text-xs font-bold text-cyan-300">
+              <Sparkles className="w-3.5 h-3.5 text-cyan-400" /> Phase 1 Triplet
             </span>
-            <span className="text-[9px] text-slate-400">A·B·C Hypercycle</span>
+            <span className="text-xs text-slate-400 font-medium">A·B·C Hypercycle</span>
           </button>
 
           <button
             onClick={handleInjectSKI}
-            className="p-2 rounded bg-purple-950/40 hover:bg-purple-900/50 border border-purple-500/40 text-purple-200 text-left flex flex-col gap-0.5"
+            className="p-2.5 rounded-lg bg-purple-950/40 hover:bg-purple-900/50 border border-purple-500/40 text-purple-200 text-left flex flex-col gap-0.5"
           >
-            <span className="flex items-center gap-1 text-[11px] font-bold text-purple-300">
-              <Sparkles className="w-3 h-3 text-purple-400" /> Phase 1 SKI
+            <span className="flex items-center gap-1.5 text-xs font-bold text-purple-300">
+              <Sparkles className="w-3.5 h-3.5 text-purple-400" /> Phase 1 SKI
             </span>
-            <span className="text-[9px] text-slate-400">Copy Closure</span>
+            <span className="text-xs text-slate-400 font-medium">Copy Closure</span>
           </button>
 
           <button
             onClick={handlePerturb}
-            className="p-2 rounded bg-pink-950/40 hover:bg-pink-900/50 border border-pink-500/40 text-pink-200 text-left flex flex-col gap-0.5"
+            className="p-2.5 rounded-lg bg-pink-950/40 hover:bg-pink-900/50 border border-pink-500/40 text-pink-200 text-left flex flex-col gap-0.5"
           >
-            <span className="flex items-center gap-1 text-[11px] font-bold text-pink-300">
-              <Flame className="w-3 h-3 text-pink-400" /> Phase 2 Perturb
+            <span className="flex items-center gap-1.5 text-xs font-bold text-pink-300">
+              <Flame className="w-3.5 h-3.5 text-pink-400" /> Phase 2 Perturb
             </span>
-            <span className="text-[9px] text-slate-400">Thermal Noise Shock</span>
+            <span className="text-xs text-slate-400 font-medium">Thermal Noise Shock</span>
           </button>
         </div>
 
@@ -149,20 +149,20 @@ export const ControlDeck: React.FC<ControlDeckProps> = ({
         <div className="flex items-center justify-between text-xs pt-1">
           <button
             onClick={handleInjectParasite}
-            className="px-2.5 py-1 rounded bg-red-950/40 hover:bg-red-900/50 border border-red-500/40 text-red-300 text-[11px] flex items-center gap-1.5"
+            className="px-3 py-1.5 rounded-lg bg-red-950/40 hover:bg-red-900/50 border border-red-500/40 text-red-300 text-xs font-semibold flex items-center gap-1.5"
           >
-            <Bug className="w-3 h-3 text-red-400" />
+            <Bug className="w-3.5 h-3.5 text-red-400" />
             Inject Parasites (P)
           </button>
-          <span className="text-[10px] text-slate-500">Tests algebraic immunity & boundary permeability</span>
+          <span className="text-xs text-slate-400">Tests algebraic immunity & boundary permeability</span>
         </div>
       </div>
 
       {/* Kinetics & Physical Parameter Sliders */}
-      <div className="border-t border-slate-800/80 pt-2 grid grid-cols-2 sm:grid-cols-4 gap-3 text-xs">
+      <div className="border-t border-slate-800/80 pt-2.5 grid grid-cols-2 sm:grid-cols-4 gap-3.5 text-xs">
         {/* Population Capacity N */}
         <div>
-          <div className="flex justify-between text-[10px] text-slate-400 mb-1">
+          <div className="flex justify-between text-xs text-slate-300 font-medium mb-1.5">
             <span>Capacity (N)</span>
             <span className="text-cyan-400 font-bold">{config.capacity}</span>
           </div>
@@ -179,7 +179,7 @@ export const ControlDeck: React.FC<ControlDeckProps> = ({
 
         {/* Speed / Temperature */}
         <div>
-          <div className="flex justify-between text-[10px] text-slate-400 mb-1">
+          <div className="flex justify-between text-xs text-slate-300 font-medium mb-1.5">
             <span>Temperature (v)</span>
             <span className="text-cyan-400 font-bold">{config.particleSpeed.toFixed(1)}x</span>
           </div>
@@ -196,7 +196,7 @@ export const ControlDeck: React.FC<ControlDeckProps> = ({
 
         {/* Collision Radius */}
         <div>
-          <div className="flex justify-between text-[10px] text-slate-400 mb-1">
+          <div className="flex justify-between text-xs text-slate-300 font-medium mb-1.5">
             <span>Collision Radius</span>
             <span className="text-cyan-400 font-bold">{config.collisionRadius}px</span>
           </div>
@@ -213,7 +213,7 @@ export const ControlDeck: React.FC<ControlDeckProps> = ({
 
         {/* Dilution Rate */}
         <div>
-          <div className="flex justify-between text-[10px] text-slate-400 mb-1">
+          <div className="flex justify-between text-xs text-slate-300 font-medium mb-1.5">
             <span>Dilution Rate</span>
             <span className="text-cyan-400 font-bold">{(config.dilutionRate * 100).toFixed(0)}%</span>
           </div>

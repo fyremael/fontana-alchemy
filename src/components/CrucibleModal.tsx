@@ -67,40 +67,40 @@ export const CrucibleModal: React.FC<CrucibleModalProps> = ({
         </div>
 
         {/* Content Body */}
-        <div className="p-5 overflow-y-auto space-y-4 text-xs">
+        <div className="p-5 overflow-y-auto space-y-4 text-sm">
           {/* Quick Presets */}
           <div>
-            <div className="text-[10px] text-slate-400 uppercase font-semibold mb-1.5">
+            <div className="text-xs text-slate-400 uppercase font-semibold mb-1.5 tracking-wider">
               Classic Fontana Reactions:
             </div>
             <div className="flex flex-wrap gap-1.5">
               <button
                 onClick={() => loadPresetPair('A', 'B')}
-                className="px-2 py-1 rounded bg-slate-800 hover:bg-slate-700 text-cyan-300 border border-cyan-500/30 text-[11px]"
+                className="px-2.5 py-1 rounded bg-slate-800 hover:bg-slate-700 text-cyan-300 border border-cyan-500/30 text-xs font-medium"
               >
                 A + B → C (Hypercycle)
               </button>
               <button
                 onClick={() => loadPresetPair('B', 'C')}
-                className="px-2 py-1 rounded bg-slate-800 hover:bg-slate-700 text-pink-300 border border-pink-500/30 text-[11px]"
+                className="px-2.5 py-1 rounded bg-slate-800 hover:bg-slate-700 text-pink-300 border border-pink-500/30 text-xs font-medium"
               >
                 B + C → A
               </button>
               <button
                 onClick={() => loadPresetPair('S (K) (K)', 'I')}
-                className="px-2 py-1 rounded bg-slate-800 hover:bg-slate-700 text-emerald-300 border border-emerald-500/30 text-[11px]"
+                className="px-2.5 py-1 rounded bg-slate-800 hover:bg-slate-700 text-emerald-300 border border-emerald-500/30 text-xs font-medium"
               >
                 (S K K) I → I (Identity Synthesis)
               </button>
               <button
                 onClick={() => loadPresetPair('K (S (K))', 'B')}
-                className="px-2 py-1 rounded bg-slate-800 hover:bg-slate-700 text-amber-300 border border-amber-500/30 text-[11px]"
+                className="px-2.5 py-1 rounded bg-slate-800 hover:bg-slate-700 text-amber-300 border border-amber-500/30 text-xs font-medium"
               >
                 K (S K) B → S K
               </button>
               <button
                 onClick={() => loadPresetPair('P', 'A')}
-                className="px-2 py-1 rounded bg-slate-800 hover:bg-slate-700 text-red-300 border border-red-500/30 text-[11px]"
+                className="px-2.5 py-1 rounded bg-slate-800 hover:bg-slate-700 text-red-300 border border-red-500/30 text-xs font-medium"
               >
                 P + A → P (Parasite)
               </button>
@@ -110,7 +110,7 @@ export const CrucibleModal: React.FC<CrucibleModalProps> = ({
           {/* Input Editors */}
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
             <div>
-              <label className="block text-[11px] text-slate-400 font-semibold mb-1">
+              <label className="block text-xs text-slate-300 font-semibold mb-1">
                 Reactant Term A:
               </label>
               <input
@@ -118,12 +118,12 @@ export const CrucibleModal: React.FC<CrucibleModalProps> = ({
                 value={inputA}
                 onChange={(e) => setInputA(e.target.value)}
                 placeholder="e.g. S (K) (K) or λx. x"
-                className="w-full bg-slate-950 border border-slate-700 rounded px-3 py-2 text-cyan-300 font-mono focus:border-cyan-400 focus:outline-none text-xs"
+                className="w-full bg-slate-950 border border-slate-700 rounded px-3 py-2 text-cyan-300 font-mono focus:border-cyan-400 focus:outline-none text-sm"
               />
             </div>
 
             <div>
-              <label className="block text-[11px] text-slate-400 font-semibold mb-1">
+              <label className="block text-xs text-slate-300 font-semibold mb-1">
                 Reactant Term B:
               </label>
               <input
@@ -131,7 +131,7 @@ export const CrucibleModal: React.FC<CrucibleModalProps> = ({
                 value={inputB}
                 onChange={(e) => setInputB(e.target.value)}
                 placeholder="e.g. I or λy. y"
-                className="w-full bg-slate-950 border border-slate-700 rounded px-3 py-2 text-pink-300 font-mono focus:border-pink-400 focus:outline-none text-xs"
+                className="w-full bg-slate-950 border border-slate-700 rounded px-3 py-2 text-pink-300 font-mono focus:border-pink-400 focus:outline-none text-sm"
               />
             </div>
           </div>
@@ -156,25 +156,25 @@ export const CrucibleModal: React.FC<CrucibleModalProps> = ({
                   ) : (
                     <AlertCircle className="w-4 h-4 text-amber-400" />
                   )}
-                  <span className="font-bold text-slate-200">
+                  <span className="font-bold text-slate-200 text-xs">
                     {reactionResult.success ? 'NORMAL FORM REACHED' : 'COLLISION TERMINATED WITHOUT PRODUCT'}
                   </span>
                 </div>
-                <div className="text-[11px] text-slate-400">
+                <div className="text-xs text-slate-400">
                   {reactionResult.stepsCount} β-steps | Reason:{' '}
-                  <span className="text-cyan-300">{reactionResult.reason}</span>
+                  <span className="text-cyan-300 font-semibold">{reactionResult.reason}</span>
                 </div>
               </div>
 
               {reactionResult.product && (
-                <div className="p-2.5 rounded bg-cyan-950/30 border border-cyan-500/40 flex items-center justify-between">
+                <div className="p-3 rounded bg-cyan-950/30 border border-cyan-500/40 flex items-center justify-between">
                   <div>
-                    <div className="text-[10px] text-slate-400 uppercase">Product Molecule C:</div>
-                    <div className="text-sm font-bold text-cyan-300 font-mono mt-0.5">
+                    <div className="text-xs text-slate-400 uppercase tracking-wider">Product Molecule C:</div>
+                    <div className="text-base font-bold text-cyan-300 font-mono mt-0.5">
                       {formatTerm(reactionResult.product, 40)}
                     </div>
                   </div>
-                  <div className="text-right text-[10px] text-slate-400">
+                  <div className="text-right text-xs text-slate-400 leading-tight">
                     <div>Canonical: {reactionResult.product.canonical}</div>
                     <div>AST Nodes: {reactionResult.product.size} | Depth: {reactionResult.product.depth}</div>
                   </div>
@@ -183,20 +183,20 @@ export const CrucibleModal: React.FC<CrucibleModalProps> = ({
 
               {/* Step by Step Trace */}
               <div>
-                <div className="text-[11px] text-slate-400 font-semibold mb-1.5">
+                <div className="text-xs text-slate-400 font-semibold mb-1.5 uppercase tracking-wider">
                   Leftmost-Outermost Reduction Trace:
                 </div>
-                <div className="space-y-1 max-h-48 overflow-y-auto pr-1">
+                <div className="space-y-1.5 max-h-48 overflow-y-auto pr-1">
                   {reactionResult.trace?.map((step: any, idx: number) => (
                     <div
                       key={idx}
-                      className="p-1.5 rounded bg-slate-900/80 border border-slate-800 text-[11px] flex items-center justify-between"
+                      className="p-2 rounded bg-slate-900/80 border border-slate-800 text-xs flex items-center justify-between"
                     >
                       <div className="flex items-center gap-2">
                         <span className="w-5 text-slate-500 font-bold">#{step.step}</span>
-                        <span className="text-slate-300 font-mono">{step.termStr}</span>
+                        <span className="text-slate-200 font-mono">{step.termStr}</span>
                       </div>
-                      <span className="text-[10px] text-purple-400 px-1.5 py-0.5 rounded bg-purple-950/50 border border-purple-800/40">
+                      <span className="text-xs text-purple-400 px-2 py-0.5 rounded bg-purple-950/50 border border-purple-800/40">
                         {step.rule}
                       </span>
                     </div>

@@ -193,16 +193,16 @@ export const HypergraphView: React.FC<HypergraphViewProps> = ({ reactor, metrics
 
         // Label
         ctx.fillStyle = '#ffffff';
-        ctx.font = 'bold 10px JetBrains Mono, monospace';
+        ctx.font = 'bold 12px JetBrains Mono, monospace';
         ctx.textAlign = 'center';
         ctx.textBaseline = 'middle';
         ctx.shadowBlur = 0;
         ctx.fillText(node.label.slice(0, 5), node.x, node.y);
 
         // Subtext: count
-        ctx.fillStyle = '#94a3b8';
-        ctx.font = '9px JetBrains Mono, monospace';
-        ctx.fillText(`×${node.count}`, node.x, node.y + radius + 10);
+        ctx.fillStyle = '#cbd5e1';
+        ctx.font = 'bold 11px JetBrains Mono, monospace';
+        ctx.fillText(`×${node.count}`, node.x, node.y + radius + 12);
 
         ctx.restore();
       }
@@ -246,8 +246,8 @@ export const HypergraphView: React.FC<HypergraphViewProps> = ({ reactor, metrics
 
   return (
     <div ref={containerRef} className="relative w-full h-full min-h-[220px] rounded-lg border border-slate-800 bg-[#0a0d16] overflow-hidden">
-      <div className="absolute top-2 left-3 z-10 text-[11px] font-mono text-slate-400 flex items-center gap-1.5 pointer-events-none">
-        <span className="w-1.5 h-1.5 rounded-full bg-cyan-400" />
+      <div className="absolute top-2.5 left-3 z-10 text-xs font-mono text-slate-300 font-semibold flex items-center gap-1.5 pointer-events-none">
+        <span className="w-2 h-2 rounded-full bg-cyan-400" />
         REACTION HYPERGRAPH (A + B → C)
       </div>
 
@@ -259,11 +259,11 @@ export const HypergraphView: React.FC<HypergraphViewProps> = ({ reactor, metrics
 
       {hoveredNode && (
         <div
-          className="absolute z-20 pointer-events-none bg-slate-900/95 border border-cyan-500/60 rounded px-2 py-1 text-xs font-mono text-slate-200"
+          className="absolute z-20 pointer-events-none bg-slate-900/95 border border-cyan-500/60 rounded px-2.5 py-1.5 text-xs font-mono text-slate-200"
           style={{ left: hoveredNode.x + 10, top: hoveredNode.y - 20 }}
         >
-          <div className="font-bold text-cyan-300">{hoveredNode.label}</div>
-          <div className="text-[10px] text-slate-400">Pool Abundance: {hoveredNode.count}</div>
+          <div className="font-bold text-cyan-300 text-sm">{hoveredNode.label}</div>
+          <div className="text-xs text-slate-400 mt-0.5">Pool Abundance: {hoveredNode.count}</div>
         </div>
       )}
     </div>

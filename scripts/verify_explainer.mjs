@@ -6,14 +6,14 @@ const artifactDir = 'C:\\Users\\jamie\\.gemini\\antigravity\\brain\\f8db1cbf-424
 async function runExplainerVerification() {
   console.log('🚀 Launching Playwright to capture Explainer Modal...');
 
-  const browser = await chromium.launch({ headless: true });
+  const browser = await chromium.launch({ channel: 'chrome', headless: true });
   const context = await browser.newContext({
     viewport: { width: 1440, height: 900 },
     deviceScaleFactor: 1
   });
 
   const page = await context.newPage();
-  await page.goto('http://127.0.0.1:5173', { waitUntil: 'networkidle' });
+  await page.goto('http://localhost:5173', { waitUntil: 'networkidle' });
 
   // Wait for canvas
   await page.waitForSelector('canvas');

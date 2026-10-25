@@ -115,14 +115,19 @@ export const ReactorCanvas: React.FC<ReactorCanvasProps> = ({
           ctx.stroke();
 
           // Render reaction text badge
-          ctx.fillStyle = `rgba(255, 255, 255, ${alpha})`;
-          ctx.font = 'bold 11px JetBrains Mono, monospace';
+          ctx.save();
+          ctx.font = 'bold 13px JetBrains Mono, monospace';
           ctx.textAlign = 'center';
-          ctx.fillText(
-            `${ev.termA} + ${ev.termB} → ${ev.productTerm || 'Ø'}`,
-            ev.x,
-            ev.y - radius - 4
-          );
+          const text = `${ev.termA} + ${ev.termB} → ${ev.productTerm || 'Ø'}`;
+          const textWidth = ctx.measureText(text).width;
+          ctx.fillStyle = `rgba(15, 23, 42, ${alpha * 0.85})`;
+          ctx.fillRect(ev.x - textWidth / 2 - 6, ev.y - radius - 18, textWidth + 12, 18);
+          ctx.strokeStyle = `rgba(0, 240, 255, ${alpha * 0.6})`;
+          ctx.lineWidth = 1;
+          ctx.strokeRect(ev.x - textWidth / 2 - 6, ev.y - radius - 18, textWidth + 12, 18);
+          ctx.fillStyle = `rgba(255, 255, 255, ${alpha})`;
+          ctx.fillText(text, ev.x, ev.y - radius - 4);
+          ctx.restore();
           ctx.restore();
         }
       }
@@ -171,7 +176,7 @@ export const ReactorCanvas: React.FC<ReactorCanvasProps> = ({
 
         // Symbol label inside particle
         ctx.fillStyle = '#ffffff';
-        ctx.font = 'bold 9px JetBrains Mono, monospace';
+        ctx.font = 'bold 11px JetBrains Mono, monospace';
         ctx.textAlign = 'center';
         ctx.textBaseline = 'middle';
         ctx.shadowBlur = 0;
@@ -231,7 +236,7 @@ export const ReactorCanvas: React.FC<ReactorCanvasProps> = ({
           <span className="text-cyan-400 font-bold">N={reactor.particles.length}</span>
         </div>
         {metrics.level >= 1 && (
-          <div className="px-2.5 py-1 rounded bg-purple-950/80 backdrop-blur border border-purple-500/40 text-[11px] font-mono text-purple-300">
+          <div className="px-2.5 py-1 rounded bg-purple-950/80 backdrop-blur border border-purple-500/40 text-xs font-mono text-purple-300 font-semibold">
             ✦ Emergent Autopoietic Boundary Active
           </div>
         )}
@@ -240,24 +245,24 @@ export const ReactorCanvas: React.FC<ReactorCanvasProps> = ({
       {/* Particle Tooltip */}
       {hoveredParticle && (
         <div
-          className="absolute z-20 pointer-events-none bg-slate-900/95 backdrop-blur-md border border-cyan-500/50 rounded px-2.5 py-1.5 text-xs font-mono shadow-xl text-slate-200"
+          className="absolute z-20 pointer-events-none bg-slate-900/95 backdrop-blur-md border border-cyan-500/50 rounded-lg px-3 py-2 text-xs font-mono shadow-xl text-slate-200"
           style={{
             left: Math.min(canvasRef.current?.width || 0 - 160, hoveredParticle.x + 12),
             top: Math.max(10, hoveredParticle.y - 30)
           }}
         >
-          <div className="flex items-center gap-1.5 font-bold text-cyan-300">
+          <div className="flex items-center gap-1.5 font-bold text-cyan-300 text-sm">
             <span
               className="w-2.5 h-2.5 rounded-full inline-block"
               style={{ backgroundColor: hoveredParticle.color }}
             />
             {hoveredParticle.label}
           </div>
-          <div className="text-[10px] text-slate-400 mt-0.5">
-            Role: <span className="uppercase text-slate-200">{hoveredParticle.role}</span>
+          <div className="text-xs text-slate-400 mt-1">
+            Role: <span className="uppercase text-slate-200 font-semibold">{hoveredParticle.role}</span>
           </div>
-          <div className="text-[10px] text-slate-400">
-            AST Size: <span className="text-slate-200">{hoveredParticle.term.size}</span> | Depth: <span className="text-slate-200">{hoveredParticle.term.depth}</span>
+          <div className="text-xs text-slate-400">
+            AST Size: <span className="text-slate-200 font-semibold">{hoveredParticle.term.size}</span> | Depth: <span className="text-slate-200 font-semibold">{hoveredParticle.term.depth}</span>
           </div>
         </div>
       )}

@@ -44,7 +44,7 @@ export const PresetSelector: React.FC<PresetSelectorProps> = ({
 
   return (
     <div className="flex items-center gap-1.5 overflow-x-auto py-1 text-xs font-mono">
-      <span className="text-[10px] text-slate-500 uppercase tracking-wider font-semibold whitespace-nowrap mr-1">
+      <span className="text-xs text-slate-400 uppercase tracking-wider font-semibold whitespace-nowrap mr-1">
         Scenarios:
       </span>
       {PRESETS.map((preset) => {

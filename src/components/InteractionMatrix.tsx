@@ -69,11 +69,11 @@ export const InteractionMatrix: React.FC<InteractionMatrixProps> = ({ metrics })
   return (
     <div className="p-3 bg-slate-900/70 border border-slate-800 rounded-lg font-mono">
       <div className="flex items-center justify-between mb-2">
-        <div className="text-[11px] text-slate-400 flex items-center gap-1.5 font-bold uppercase tracking-wider">
-          <span className="w-1.5 h-1.5 rounded-full bg-purple-400" />
+        <div className="text-xs text-slate-300 flex items-center gap-1.5 font-bold uppercase tracking-wider">
+          <span className="w-2 h-2 rounded-full bg-purple-400" />
           Closure Matrix: eval(A, B)
         </div>
-        <div className="text-[10px] text-cyan-400">
+        <div className="text-xs text-cyan-400">
           Closure: <span className="font-bold">{(metrics.closureRatio * 100).toFixed(0)}%</span>
         </div>
       </div>
@@ -83,11 +83,11 @@ export const InteractionMatrix: React.FC<InteractionMatrixProps> = ({ metrics })
         <table className="w-full border-collapse text-center">
           <thead>
             <tr>
-              <th className="p-1 text-[10px] text-slate-500 font-normal">A \ B</th>
+              <th className="p-1.5 text-xs text-slate-400 font-semibold">A \ B</th>
               {topSpecies.map((s, idx) => (
                 <th
                   key={idx}
-                  className="p-1 text-[10px] font-bold"
+                  className="p-1.5 text-xs font-bold"
                   style={{ color: s.color }}
                   title={s.label}
                 >
@@ -100,7 +100,7 @@ export const InteractionMatrix: React.FC<InteractionMatrixProps> = ({ metrics })
             {matrixData.map((row, rIdx) => (
               <tr key={rIdx}>
                 <td
-                  className="p-1 text-[10px] font-bold text-left"
+                  className="p-1.5 text-xs font-bold text-left"
                   style={{ color: row.species.color }}
                 >
                   {row.species.label.slice(0, 3)}
@@ -117,7 +117,7 @@ export const InteractionMatrix: React.FC<InteractionMatrixProps> = ({ metrics })
                       })
                     }
                     onMouseLeave={() => setHoveredCell(null)}
-                    className={`p-1 text-[10px] border border-slate-800/80 cursor-pointer transition-colors ${
+                    className={`p-1.5 text-xs border border-slate-800/80 cursor-pointer transition-colors ${
                       cell.isClosed
                         ? 'bg-emerald-500/20 text-emerald-300 font-bold hover:bg-emerald-500/40 border-emerald-500/40'
                         : cell.product
@@ -135,19 +135,19 @@ export const InteractionMatrix: React.FC<InteractionMatrixProps> = ({ metrics })
       </div>
 
       {/* Hover Inspection Bar */}
-      <div className="mt-2 text-[10px] text-slate-400 min-h-[18px] bg-slate-950/60 px-2 py-0.5 rounded border border-slate-800/60 flex items-center justify-between">
+      <div className="mt-2 text-xs text-slate-300 min-h-[22px] bg-slate-950/80 px-2.5 py-1 rounded border border-slate-800/80 flex items-center justify-between">
         {hoveredCell ? (
           <>
             <span>
               <span className="text-white font-bold">{hoveredCell.row}</span> ({hoveredCell.col}) →{' '}
               <span className="text-cyan-300 font-bold">{hoveredCell.product || 'sterile (Ø)'}</span>
             </span>
-            <span className={hoveredCell.isClosed ? 'text-emerald-400 font-bold' : 'text-slate-500'}>
+            <span className={hoveredCell.isClosed ? 'text-emerald-400 font-bold' : 'text-slate-400'}>
               {hoveredCell.isClosed ? '✓ In Closure' : '✗ External Product'}
             </span>
           </>
         ) : (
-          <span className="text-slate-600">Hover cell to inspect functional reaction</span>
+          <span className="text-slate-500">Hover cell to inspect functional reaction</span>
         )}
       </div>
     </div>

@@ -8,6 +8,7 @@ async function runBrowserVerification() {
   console.log('🚀 Launching Playwright browser for AlChemy verification...');
 
   const browser = await chromium.launch({
+    channel: 'chrome',
     headless: true,
   });
 
@@ -25,8 +26,8 @@ async function runBrowserVerification() {
     }
   });
 
-  console.log('🌐 Navigating to http://127.0.0.1:5173 ...');
-  await page.goto('http://127.0.0.1:5173', { waitUntil: 'networkidle' });
+  console.log('🌐 Navigating to http://localhost:5173 ...');
+  await page.goto('http://localhost:5173', { waitUntil: 'networkidle' });
 
   // 1. Verify canvas loaded
   await page.waitForSelector('canvas');
