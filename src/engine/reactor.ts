@@ -27,8 +27,8 @@ export class ReactorEngine {
     this.width = width;
     this.height = height;
     this.config = {
-      capacity: 150,
-      particleSpeed: 1.2,
+      capacity: 90,
+      particleSpeed: 0.6,
       collisionRadius: 10,
       dilutionRate: 1.0,
       maxReductionSteps: 150,
@@ -310,9 +310,11 @@ export class ReactorEngine {
       }
     }
 
-    // Age out old collision visual events (keep last 8)
-    if (this.recentEvents.length > 8) {
-      this.recentEvents.splice(0, this.recentEvents.length - 8);
+    // Age out old collision visual events (retain for ~2.2 seconds, max 12 events)
+    const cutoff = now - 2200;
+    this.recentEvents = this.recentEvents.filter(e => e.time >= cutoff);
+    if (this.recentEvents.length > 12) {
+      this.recentEvents.splice(0, this.recentEvents.length - 12);
     }
   }
 
@@ -342,8 +344,8 @@ export class ReactorEngine {
     p2.vx += p * nx;
     p2.vy += p * ny;
 
-    // Cooldown check to prevent repeated reaction on consecutive frames
-    if (now - p1.lastReactionTime < 120 || now - p2.lastReactionTime < 120) {
+    // Cooldown check: 250ms refractory period gives clear, observable interaction pacing
+    if (now - p1.lastReactionTime < 250 || now - p2.lastReactionTime < 250) {
       return;
     }
 

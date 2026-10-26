@@ -7,17 +7,22 @@ interface ReactorCanvasProps {
   metrics: OrganizationMetrics;
   onSelectParticle?: (particle: Particle) => void;
   selectedParticleId?: string | null;
+  onTriggerPhase?: (phase: 0 | 1 | 2) => void;
+  onOpenPrimer?: () => void;
 }
 
 export const ReactorCanvas: React.FC<ReactorCanvasProps> = ({
   reactor,
   metrics,
   onSelectParticle,
-  selectedParticleId
+  selectedParticleId,
+  onTriggerPhase,
+  onOpenPrimer
 }) => {
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const containerRef = useRef<HTMLDivElement>(null);
   const [hoveredParticle, setHoveredParticle] = useState<Particle | null>(null);
+  const [showGuideBanner, setShowGuideBanner] = useState<boolean>(true);
 
   // Resize canvas to fill parent container
   useEffect(() => {
@@ -98,35 +103,36 @@ export const ReactorCanvas: React.FC<ReactorCanvasProps> = ({
         }
       }
 
-      // Draw active collision burst waves
+      // Draw active collision burst waves & floating reaction badges
       const now = Date.now();
       for (const ev of reactor.recentEvents) {
         const age = (now - ev.time) / 1000;
-        if (age < 0.8) {
-          const progress = age / 0.8;
-          const radius = 12 + progress * 35;
-          const alpha = 1 - progress;
+        if (age < 1.8) {
+          const progress = age / 1.8;
+          const radius = 12 + progress * 24;
+          const alpha = Math.max(0, 1 - progress);
+          const floatY = progress * 16; // Gently floats upward
 
           ctx.save();
           ctx.beginPath();
           ctx.arc(ev.x, ev.y, radius, 0, Math.PI * 2);
           ctx.strokeStyle = `rgba(0, 240, 255, ${alpha * 0.8})`;
-          ctx.lineWidth = 2 * (1 - progress);
+          ctx.lineWidth = Math.max(0.5, 2 * (1 - progress));
           ctx.stroke();
 
-          // Render reaction text badge
+          // Render reaction text badge with solid backdrop for effortless readability
           ctx.save();
-          ctx.font = 'bold 13px JetBrains Mono, monospace';
+          ctx.font = 'bold 12px JetBrains Mono, monospace';
           ctx.textAlign = 'center';
           const text = `${ev.termA} + ${ev.termB} → ${ev.productTerm || 'Ø'}`;
           const textWidth = ctx.measureText(text).width;
-          ctx.fillStyle = `rgba(15, 23, 42, ${alpha * 0.85})`;
-          ctx.fillRect(ev.x - textWidth / 2 - 6, ev.y - radius - 18, textWidth + 12, 18);
-          ctx.strokeStyle = `rgba(0, 240, 255, ${alpha * 0.6})`;
+          ctx.fillStyle = `rgba(10, 15, 28, ${Math.min(0.92, alpha * 1.15)})`;
+          ctx.fillRect(ev.x - textWidth / 2 - 8, ev.y - radius - 20 - floatY, textWidth + 16, 22);
+          ctx.strokeStyle = `rgba(0, 240, 255, ${alpha * 0.75})`;
           ctx.lineWidth = 1;
-          ctx.strokeRect(ev.x - textWidth / 2 - 6, ev.y - radius - 18, textWidth + 12, 18);
+          ctx.strokeRect(ev.x - textWidth / 2 - 8, ev.y - radius - 20 - floatY, textWidth + 16, 22);
           ctx.fillStyle = `rgba(255, 255, 255, ${alpha})`;
-          ctx.fillText(text, ev.x, ev.y - radius - 4);
+          ctx.fillText(text, ev.x, ev.y - radius - 5 - floatY);
           ctx.restore();
           ctx.restore();
         }
@@ -265,6 +271,67 @@ export const ReactorCanvas: React.FC<ReactorCanvasProps> = ({
             AST Size: <span className="text-slate-200 font-semibold">{hoveredParticle.term.size}</span> | Depth: <span className="text-slate-200 font-semibold">{hoveredParticle.term.depth}</span>
           </div>
         </div>
+      )}
+
+      {/* Interactive Guidance Bar docked at Bottom of Canvas */}
+      {showGuideBanner ? (
+        <div className="absolute bottom-3 left-3 right-3 z-20 bg-slate-950/90 backdrop-blur-md border border-cyan-500/40 rounded-xl px-3.5 py-2.5 flex flex-wrap items-center justify-between gap-2 shadow-2xl text-xs font-mono">
+          <div className="flex items-center gap-2.5 min-w-0">
+            <span className="w-2 h-2 rounded-full bg-cyan-400 animate-pulse shrink-0" />
+            <div className="text-slate-200 truncate">
+              {metrics.level === 0 ? (
+                <span>
+                  <strong className="text-amber-300">Level 0 (Entropic Soup):</strong> Programs drift & collide into noise.
+                  <span className="hidden sm:inline text-slate-400"> Click a particle to inspect, or click </span>
+                  <span className="text-cyan-300 font-bold hidden sm:inline">"Phase 1 Triplet"</span>
+                  <span className="hidden sm:inline text-slate-400"> to see self-maintaining life form!</span>
+                </span>
+              ) : metrics.level === 1 ? (
+                <span>
+                  <strong className="text-cyan-300">Level 1 (Autopoietic Core):</strong> A(B)→C, B(C)→A, C(A)→B hypercycle reproducing itself!
+                  <span className="hidden sm:inline text-slate-400"> The dashed hull is the emergent functional boundary.</span>
+                </span>
+              ) : (
+                <span>
+                  <strong className="text-emerald-300">Level 2 (Immune Boundary):</strong> Self-closed sub-algebra actively deflecting noise & parasites!
+                </span>
+              )}
+            </div>
+          </div>
+
+          <div className="flex items-center gap-2 shrink-0">
+            {metrics.level === 0 && onTriggerPhase && (
+              <button
+                onClick={() => onTriggerPhase(1)}
+                className="px-2.5 py-1 rounded-lg bg-cyan-500 hover:bg-cyan-400 text-slate-950 font-bold transition-all flex items-center gap-1 shadow-[0_0_10px_rgba(0,240,255,0.3)] text-xs"
+              >
+                ⚡ Launch Phase 1
+              </button>
+            )}
+            {onOpenPrimer && (
+              <button
+                onClick={onOpenPrimer}
+                className="px-2.5 py-1 rounded-lg bg-slate-800 hover:bg-slate-700 text-cyan-300 border border-cyan-500/30 transition-all font-semibold text-xs"
+              >
+                💡 What am I seeing?
+              </button>
+            )}
+            <button
+              onClick={() => setShowGuideBanner(false)}
+              className="p-1 rounded text-slate-400 hover:text-white hover:bg-slate-800 transition-colors"
+              title="Minimize guide bar"
+            >
+              ✕
+            </button>
+          </div>
+        </div>
+      ) : (
+        <button
+          onClick={() => setShowGuideBanner(true)}
+          className="absolute bottom-3 right-3 z-20 px-2.5 py-1 rounded-lg bg-slate-900/90 hover:bg-slate-800 backdrop-blur border border-cyan-500/40 text-cyan-300 text-xs font-mono shadow-lg transition-all flex items-center gap-1.5"
+        >
+          💡 Guide
+        </button>
       )}
     </div>
   );

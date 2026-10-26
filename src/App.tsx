@@ -9,8 +9,9 @@ import { ControlDeck } from './components/ControlDeck';
 import { CrucibleModal } from './components/CrucibleModal';
 import { PresetSelector } from './components/PresetSelector';
 import { ExplainerModal } from './components/ExplainerModal';
+import { WelcomePrimerModal } from './components/WelcomePrimerModal';
 import { Particle, OrganizationMetrics, ReactorConfig } from './types';
-import { Atom, BookOpen, HelpCircle } from 'lucide-react';
+import { Atom, BookOpen, HelpCircle, Sparkles } from 'lucide-react';
 
 export function App() {
   // Master simulation engine
@@ -26,6 +27,13 @@ export function App() {
   const [isCrucibleOpen, setIsCrucibleOpen] = useState<boolean>(false);
   const [activePresetId, setActivePresetId] = useState<string>('level0-gas');
   const [showInfoModal, setShowInfoModal] = useState<boolean>(false);
+  const [showPrimerModal, setShowPrimerModal] = useState<boolean>(() => {
+    try {
+      return localStorage.getItem('fontana_alchemy_primer_dismissed') !== 'true';
+    } catch {
+      return true;
+    }
+  });
 
   const [metrics, setMetrics] = useState<OrganizationMetrics>(() =>
     analyzeOrganization(reactor.particles, {
@@ -126,6 +134,23 @@ export function App() {
     setIsCrucibleOpen(true);
   };
 
+  const handleTriggerPhase = useCallback((phase: 0 | 1 | 2) => {
+    if (phase === 0) {
+      reactor.initLevel0();
+      setActivePresetId('level0-gas');
+    } else if (phase === 1) {
+      reactor.injectCatalyticTriplet(0.4);
+      setActivePresetId('level1-triplet');
+    } else {
+      reactor.injectCatalyticTriplet(0.4);
+      setTimeout(() => {
+        reactor.injectParasite(25);
+        reactor.perturbSystem(30);
+      }, 400);
+      setActivePresetId('level2-immunity');
+    }
+  }, [reactor]);
+
   return (
     <div className="flex flex-col h-screen w-screen bg-[#07090e] text-slate-100 overflow-hidden font-mono select-none">
       {/* Top Navigation Header */}
@@ -149,8 +174,8 @@ export function App() {
           </div>
         </div>
 
-        {/* Preset Selector */}
-        <div className="flex items-center gap-3 overflow-x-auto">
+        {/* Preset Selector & Orientation Guides */}
+        <div className="flex items-center gap-2.5 overflow-x-auto">
           <PresetSelector
             reactor={reactor}
             activePresetId={activePresetId}
@@ -158,12 +183,21 @@ export function App() {
           />
 
           <button
+            onClick={() => setShowPrimerModal(true)}
+            className="px-2.5 py-1.5 rounded bg-cyan-950/80 border border-cyan-500/50 text-cyan-300 hover:bg-cyan-900/70 transition-all flex items-center gap-1.5 text-xs font-bold shadow-[0_0_10px_rgba(0,240,255,0.25)] shrink-0"
+            title="Orientation: What is this simulation showing?"
+          >
+            <Sparkles className="w-3.5 h-3.5 text-cyan-300" />
+            <span className="hidden sm:inline">QUICK START</span>
+          </button>
+
+          <button
             onClick={() => setShowInfoModal(true)}
-            className="px-2.5 py-1.5 rounded bg-cyan-950/70 border border-cyan-500/50 text-cyan-300 hover:bg-cyan-900/60 transition-all flex items-center gap-1.5 text-xs font-bold shadow-[0_0_8px_rgba(0,240,255,0.2)] shrink-0"
-            title="Field Guide & Theory Explainer"
+            className="px-2.5 py-1.5 rounded bg-slate-800 hover:bg-slate-700 border border-slate-700 text-slate-300 hover:text-white transition-all flex items-center gap-1.5 text-xs font-bold shrink-0"
+            title="Complete Scientific Field Guide & Mathematical Foundations"
           >
             <BookOpen className="w-3.5 h-3.5 text-cyan-400" />
-            <span className="hidden sm:inline">HOW IT WORKS</span>
+            <span className="hidden sm:inline">THEORY GUIDE</span>
           </button>
         </div>
       </header>
@@ -179,6 +213,8 @@ export function App() {
               metrics={metrics}
               onSelectParticle={handleSelectParticle}
               selectedParticleId={selectedParticle?.id}
+              onTriggerPhase={handleTriggerPhase}
+              onOpenPrimer={() => setShowPrimerModal(true)}
             />
           </div>
 
@@ -213,6 +249,18 @@ export function App() {
           </div>
         </div>
       </main>
+
+      {/* New Viewer Primer & Orientation Modal */}
+      <WelcomePrimerModal
+        isOpen={showPrimerModal}
+        onClose={() => setShowPrimerModal(false)}
+        onLaunchPhase1={() => handleTriggerPhase(1)}
+        onOpenFieldGuide={() => {
+          setShowPrimerModal(false);
+          setShowInfoModal(true);
+        }}
+        reactor={reactor}
+      />
 
       {/* Crucible Modal */}
       <CrucibleModal

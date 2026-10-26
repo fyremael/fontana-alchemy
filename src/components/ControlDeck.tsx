@@ -87,6 +87,35 @@ export const ControlDeck: React.FC<ControlDeckProps> = ({
             <RotateCcw className="w-3.5 h-3.5" />
             RESET
           </button>
+
+          {/* Speed Presets */}
+          <div className="hidden sm:flex items-center gap-1 border-l border-slate-800 pl-2 text-xs">
+            <span className="text-slate-400 text-xs mr-1 font-semibold">Speed:</span>
+            <button
+              onClick={() => onUpdateConfig({ particleSpeed: 0.4 })}
+              className={`px-2 py-1 rounded text-xs transition-all ${
+                config.particleSpeed <= 0.5 ? 'bg-cyan-950 border border-cyan-500/50 text-cyan-300 font-bold' : 'bg-slate-800/80 text-slate-400 hover:text-white'
+              }`}
+            >
+              0.4x Slow
+            </button>
+            <button
+              onClick={() => onUpdateConfig({ particleSpeed: 0.8 })}
+              className={`px-2 py-1 rounded text-xs transition-all ${
+                config.particleSpeed > 0.5 && config.particleSpeed <= 1.0 ? 'bg-cyan-950 border border-cyan-500/50 text-cyan-300 font-bold' : 'bg-slate-800/80 text-slate-400 hover:text-white'
+              }`}
+            >
+              0.8x Normal
+            </button>
+            <button
+              onClick={() => onUpdateConfig({ particleSpeed: 1.8 })}
+              className={`px-2 py-1 rounded text-xs transition-all ${
+                config.particleSpeed > 1.0 ? 'bg-cyan-950 border border-cyan-500/50 text-cyan-300 font-bold' : 'bg-slate-800/80 text-slate-400 hover:text-white'
+              }`}
+            >
+              1.8x Fast
+            </button>
+          </div>
         </div>
 
         <button
@@ -180,12 +209,14 @@ export const ControlDeck: React.FC<ControlDeckProps> = ({
         {/* Speed / Temperature */}
         <div>
           <div className="flex justify-between text-xs text-slate-300 font-medium mb-1.5">
-            <span>Temperature (v)</span>
-            <span className="text-cyan-400 font-bold">{config.particleSpeed.toFixed(1)}x</span>
+            <span>Pacing (v)</span>
+            <span className="text-cyan-400 font-bold">
+              {config.particleSpeed.toFixed(1)}x {config.particleSpeed <= 0.5 ? '(Slow)' : config.particleSpeed >= 1.5 ? '(Fast)' : '(Normal)'}
+            </span>
           </div>
           <input
             type="range"
-            min={0.4}
+            min={0.2}
             max={2.5}
             step={0.1}
             value={config.particleSpeed}
